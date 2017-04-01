@@ -1,13 +1,6 @@
 API Design
 ==========
 
-Probably shorter names are better::
-
-    Decl = Declaration
-    Var = Variable
-    Val = Value
-
-
 Literal
 -------
 .. code-block:: c
@@ -16,9 +9,9 @@ Literal
 
 .. code-block:: python
 
-    Value(literal="3", type_=CTypes.int)
+    Val(literal="3", type_=CTypes.int)
 
-Variable
+Var
 --------
 .. code-block:: c
 
@@ -26,7 +19,7 @@ Variable
 
 .. code-block:: python
 
-    Variable("x")
+    Var("x")
 
 Expression
 ----------
@@ -38,7 +31,7 @@ Expression
 
     Expr(
         COps.plus,
-        Value(literal="1", type_=CTypes.int), Value(literal="1", type_=CTypes.int))
+        Val(literal="1", type_=CTypes.int), Val(literal="1", type_=CTypes.int))
 
 Function call
 -------------
@@ -58,9 +51,9 @@ Declaration of string with initialization
 
 .. code-block:: python
 
-    Declaration(
+    Decl(
         "my_s",
-        Value(
+        Val(
             literal="test",
             type_=CTypes.str))
 
@@ -74,7 +67,7 @@ Declaration
 
 .. code-block:: python
 
-    Declaration("a", CTypes.int)
+    Decl("a", CTypes.int)
 
 Declaration of int with initialization
 --------------------------------------
@@ -84,7 +77,7 @@ Declaration of int with initialization
 
 .. code-block:: python
 
-    Declaration("a", Value(type_=CTypes.int, literal="1"))
+    Decl("a", Val(type_=CTypes.int, literal="1"))
 
 Declaration of int with initialization by expression
 ----------------------------------------------------
@@ -94,13 +87,13 @@ Declaration of int with initialization by expression
 
 .. code-block:: python
 
-    Declaration(
+    Decl(
         "a",
-        Value(  # type is inferred
+        Val(  # type is inferred
             Expr(
                 COps.plus,
-                Value(literal="1", type_=CTypes.int),
-                Value(literal="1", type_=CTypes.int))))
+                Val(literal="1", type_=CTypes.int),
+                Val(literal="1", type_=CTypes.int))))
 
 Declaration of int array
 ------------------------
@@ -110,10 +103,10 @@ Declaration of int array
 
 .. code-block:: python
 
-    Declaration(
+    Decl(
         "a",
-        Value(
-            (Value("0", type_=CTypes.int), Value("1", CTypes.int)),
+        Val(
+            (Val("0", type_=CTypes.int), Val("1", CTypes.int)),
             CTypes.array))
 
 Assignment
@@ -127,9 +120,9 @@ Assignment
 
     Assignment(
         "a",
-        Expr(COps.star, Variable("a"), Value("3")))
+        Expr(COps.star, Var("a"), Val("3")))
 
-Type of ``Value("3")`` should be inferred from type of ``Variable("a")`` or ``Assignment("a", ...)``.
+Type of ``Val("3")`` should be inferred from type of ``Var("a")`` or ``Assignment("a", ...)``.
 
 Struct declaration
 ------------------
@@ -147,10 +140,10 @@ Struct declaration
     acc_struct = Struct(
         "account",
         (
-            Declaration("id", CTypes.int),
-            Declaration("first_name", CTypes.str),
-            Declaration("last_name", CTypes.str),
-            Declaration("balance", CTypes.int)))
+            Decl("id", CTypes.int),
+            Decl("first_name", CTypes.str),
+            Decl("last_name", CTypes.str),
+            Decl("balance", CTypes.int)))
 
 .. code-block:: c
 
@@ -158,14 +151,14 @@ Struct declaration
 
 .. code-block:: python
 
-    Declaration(
+    Decl(
         "jdoe",
-        Value(
+        Val(
             {
-                "id": Value("1", CTypes.int),
-                "first_name": Value("John", CTypes.str),
-                "last_name": Value("Doe", CTypes.str),
-                "balance": Value("123456", CTypes.int)},
+                "id": Val("1", CTypes.int),
+                "first_name": Val("John", CTypes.str),
+                "last_name": Val("Doe", CTypes.str),
+                "balance": Val("123456", CTypes.int)},
             type_=acc_struct))
 
 ``type_=acc_struct`` is equivalent to ``type_=CTypes.struct("account")``.
@@ -229,8 +222,8 @@ For
 
     For(
         (
-            Declaration("i", type_=CTypes.int, value=0),
-            Expr(COps.lt, Variable("i"), Value("1", type_=CTypes.int)),
+            Decl("i", type_=CTypes.int, value=0),
+            Expr(COps.lt, Var("i"), Val("10", type_=CTypes.int)),
             Incr("i")),
         (...))
 
