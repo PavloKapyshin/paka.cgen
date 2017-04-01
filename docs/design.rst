@@ -11,7 +11,7 @@ Literal
 
     Val(literal="3", type_=CTypes.int)
 
-Var
+Variable
 --------
 .. code-block:: c
 
